@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head th:replace="~{fragments :: head('О программе')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments :: navbar}"></nav>
+
+<!-- Страница «О программе» (форма 5): сведения о приложении и разработчике -->
+<main class="container my-4 flex-grow-1">
+    <h1>О программе</h1>
+
+    <div class="row g-4 mt-1">
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Приложение</h5>
+                    <dl class="row mb-0">
+                        <dt class="col-sm-5">Название</dt>
+                        <dd class="col-sm-7">Учёт заявок в service desk</dd>
+                        <dt class="col-sm-5">Назначение</dt>
+                        <dd class="col-sm-7">Учёт заявок сотрудников во внутренней службе
+                            поддержки: инциденты, отказы оборудования, запросы на обслуживание
+                            и доступ</dd>
+                        <dt class="col-sm-5">Версия</dt>
+                        <dd class="col-sm-7">1.0.0</dd>
+                        <dt class="col-sm-5">Мониторинг</dt>
+                        <dd class="col-sm-7">
+                            <a th:href="@{/actuator/health}" target="_blank">/actuator/health</a>,
+                            <a th:href="@{/actuator/info}" target="_blank">/actuator/info</a>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Разработчик</h5>
+                    <dl class="row mb-0">
+                        <dt class="col-sm-5">Автор</dt>
+                        <dd class="col-sm-7">Кодрик В.Ю. — курсовой проект</dd>
+                        <dt class="col-sm-5">Стек</dt>
+                        <dd class="col-sm-7">Java 21, Spring Boot 4 (Web MVC, Security,
+                            Data JPA, Validation, Actuator), H2, Thymeleaf, Lombok</dd>
+                        <dt class="col-sm-5">База данных</dt>
+                        <dd class="col-sm-7">H2 в файловом режиме, ведение журнала — logs/app.log</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title">Роли пользователей</h5>
+            <ul class="mb-0">
+                <li><b>READ_ONLY (Только просмотр)</b> — просмотр заявок и категорий без
+                    изменения данных. выдаётся всем новым пользователям при регистрации.</li>
+                <li><b>USER (Пользователь)</b> — создание и редактирование своих заявок,
+                    просмотр статистики по своим данным.</li>
+                <li><b>ADMIN (Администратор)</b> — полный доступ ко всем заявкам,
+                    управление справочником категорий и ролями пользователей.</li>
+            </ul>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

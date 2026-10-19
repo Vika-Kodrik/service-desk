@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="ru">
+<head th:replace="~{fragments :: head('Главная')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments :: navbar}"></nav>
+
+<!-- Главная страница (форма 4) -->
+<main class="container my-4 flex-grow-1">
+    <div class="p-5 mb-4 bg-body-tertiary rounded-4">
+        <h1 class="display-5">Учёт заявок в service desk</h1>
+        <p class="lead">
+            Внутренняя служба поддержки сотрудников: регистрация инцидентов, отказов
+            и запросов на обслуживание, контроль сроков по SLA и статистика работы.
+        </p>
+        <p sec:authorize="isAnonymous()">
+            <a class="btn btn-primary btn-lg" th:href="@{/login}">Войти</a>
+            <a class="btn btn-outline-secondary btn-lg" th:href="@{/register}">Зарегистрироваться</a>
+        </p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4" sec:authorize="isAuthenticated()">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">📝 Заявки</h5>
+                    <p class="card-text">Список заявок, создание новых, редактирование и удаление.</p>
+                    <a class="btn btn-primary" th:href="@{/requests}">Перейти</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" sec:authorize="isAuthenticated()">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">🗂 Категории</h5>
+                    <p class="card-text">Справочник категорий со сроками реакции (SLA, часов).</p>
+                    <a class="btn btn-primary" th:href="@{/categories}">Перейти</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" sec:authorize="hasAnyRole('USER','ADMIN')">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">📊 Статистика</h5>
+                    <p class="card-text">Статусы, приоритеты, категории, среднее время решения и нарушения SLA.</p>
+                    <a class="btn btn-primary" th:href="@{/stats}">Перейти</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" sec:authorize="hasRole('ADMIN')">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">👥 Пользователи и роли</h5>
+                    <p class="card-text">Назначение ролей USER и ADMIN. Доступно только администратору.</p>
+                    <a class="btn btn-primary" th:href="@{/admin/roles}">Перейти</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">ℹ️ О программе</h5>
+                    <p class="card-text">Сведения о приложении и разработчике.</p>
+                    <a class="btn btn-outline-secondary" th:href="@{/about}">Открыть</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-info mt-4" sec:authorize="isAnonymous()">
+        Новые пользователи после регистрации получают роль «Только просмотр» (READ_ONLY).
+        Роли USER и ADMIN назначает администратор на странице «Пользователи и роли».
+    </div>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

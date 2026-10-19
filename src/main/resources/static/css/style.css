@@ -1,0 +1,21 @@
+/* Дополнительные стили приложения (поверх Bootstrap). */
+
+/* Плотнее таблицы данных */
+.table td, .table th {
+    vertical-align: middle;
+}
+
+/* Бейдж SLA-нарушения */
+.badge-sla-violated {
+    background-color: var(--bs-danger);
+}
+
+/* Мягкий фон для блоков статистики */
+.stat-card .display-6 {
+    margin-bottom: 0;
+}
+
+/* Подпись «обязательное поле» */
+.form-label .text-danger {
+    margin-left: 2px;
+}

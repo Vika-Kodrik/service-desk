@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head th:replace="~{fragments :: head('Статистика')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments :: navbar}"></nav>
+
+<!-- Форма статистики (форма 6). USER — по своим заявкам, ADMIN — по всем. -->
+<main class="container my-4 flex-grow-1">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+        <h1 class="h3 mb-0">Статистика</h1>
+        <span class="badge text-bg-light border" th:text="${stats.scope()}">по вашим заявкам</span>
+    </div>
+
+    <!-- Сводные карточки -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+            <div class="card stat-card h-100">
+                <div class="card-body">
+                    <div class="text-muted small">Всего заявок</div>
+                    <div class="display-6" th:text="${stats.total()}">10</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card stat-card h-100">
+                <div class="card-body">
+                    <div class="text-muted small">Завершено</div>
+                    <div class="display-6" th:text="${stats.completedCount()}">5</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card stat-card h-100">
+                <div class="card-body">
+                    <div class="text-muted small">Среднее время решения</div>
+                    <div class="display-6"
+                         th:text="${stats.avgCompletionHours() != null}
+                            ? ${#numbers.formatDecimal(stats.avgCompletionHours(), 1, 1) + ' ч'} : '—'">— ч
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="card stat-card h-100 border-danger-subtle">
+                <div class="card-body">
+                    <div class="text-muted small">Нарушения SLA</div>
+                    <div class="display-6 text-danger">
+                        <span th:text="${stats.slaViolatedCount()}">2</span>
+                        <span class="fs-5 text-muted"
+                              th:text="'(' + ${#numbers.formatDecimal(stats.slaViolatedSharePercent(), 1, 1)} + '%)'">(20,0%)
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Распределение по статусам -->
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">По статусам</h5>
+                    <table class="table table-sm mb-0">
+                        <thead><tr><th>Статус</th><th class="text-end">Кол-во</th></tr></thead>
+                        <tbody>
+                        <tr th:each="e : ${stats.byStatus()}">
+                            <td th:text="${e.key.label}">Новая</td>
+                            <td class="text-end" th:text="${e.value}">3</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Распределение по приоритетам -->
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">По приоритетам</h5>
+                    <table class="table table-sm mb-0">
+                        <thead><tr><th>Приоритет</th><th class="text-end">Кол-во</th></tr></thead>
+                        <tbody>
+                        <tr th:each="e : ${stats.byPriority()}">
+                            <td th:text="${e.key.label}">Высокий</td>
+                            <td class="text-end" th:text="${e.value}">3</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Распределение по категориям -->
+        <div class="col-12">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">По категориям</h5>
+                    <div th:each="e : ${stats.byCategory()}" class="mb-2">
+                        <div class="d-flex justify-content-between">
+                            <span th:text="${e.key}">Проблема с ПК</span>
+                            <span class="text-muted" th:text="${e.value}">3</span>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar"
+                                 th:style="'width: ' + ${stats.total() > 0 ? e.value * 100 / stats.total() : 0} + '%'"></div>
+                        </div>
+                    </div>
+                    <p class="text-muted small mb-0"
+                       th:if="${#maps.isEmpty(stats.byCategory())}">Нет данных.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-info mt-4">
+        Нарушением SLA считается заявка со статусом «Завершена», время решения которой
+        превысило SLA-норматив её категории. Доля считается от завершённых заявок.
+    </div>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="ru">
+<head th:replace="~{fragments :: head('Категории')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments :: navbar}"></nav>
+
+<!-- Список категорий (форма 2). Изменение справочника — только ADMIN. -->
+<main class="container my-4 flex-grow-1">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+        <h1 class="h3 mb-0">Категории заявок</h1>
+        <a class="btn btn-primary" sec:authorize="hasRole('ADMIN')"
+           th:href="@{/categories/new}">+ Новая категория</a>
+    </div>
+
+    <div class="alert alert-warning"
+         th:if="${param.error != null and param.error[0] == 'inuse'}">
+        Нельзя удалить категорию: по ней уже есть заявки.
+    </div>
+    <div class="alert alert-warning"
+         th:if="${param.error != null and param.error[0] == 'notfound'}">
+        Категория не найдена.
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle bg-white">
+            <thead class="table-light">
+            <tr>
+                <th>№</th>
+                <th>Название</th>
+                <th>SLA, ч</th>
+                <th>Отдел</th>
+                <th>Контактный телефон</th>
+                <th class="text-end" sec:authorize="hasRole('ADMIN')">Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="c : ${categories}">
+                <td th:text="${c.id}">1</td>
+                <td th:text="${c.name}">Проблема с ПК</td>
+                <td th:text="${c.slaHours}">24</td>
+                <td th:text="${c.department ?: '—'}">ИТ-отдел</td>
+                <td th:text="${c.contactPhone ?: '—'}">+7 ...</td>
+                <td class="text-end" sec:authorize="hasRole('ADMIN')">
+                    <div class="d-flex justify-content-end gap-2">
+                        <a class="btn btn-outline-primary btn-sm"
+                           th:href="@{/categories/{id}/edit(id=${c.id})}">Изменить</a>
+                        <form th:action="@{/categories/{id}/delete(id=${c.id})}" method="post"
+                              onsubmit="return confirm('Удалить категорию?');">
+                            <button type="submit" class="btn btn-outline-danger btn-sm" style="border-radius: 0.25rem;">Удалить</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(categories)}">
+                <td colspan="6" class="text-center text-muted py-4">Справочник категорий пуст.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head th:replace="~{fragments :: head('Доступ запрещён')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments :: navbar}"></nav>
+
+<main class="container my-5 flex-grow-1">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <h1 class="display-1 text-danger">403</h1>
+            <h2>Доступ запрещён</h2>
+            <p class="text-muted">
+                У вашей роли нет прав на это действие. Обратитесь к администратору,
+                если доступ необходим.
+            </p>
+            <a class="btn btn-primary" th:href="@{/}">На главную</a>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

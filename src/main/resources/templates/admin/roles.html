@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head th:replace="~{fragments :: head('Пользователи и роли')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments :: navbar}"></nav>
+
+<!-- Форма управления ролями (форма 7). Доступна только ADMIN. -->
+<main class="container my-4 flex-grow-1">
+    <h1 class="h3">Пользователи и роли</h1>
+    <p class="text-muted">
+        Роль READ_ONLY есть у всех и не снимается. Роли USER и ADMIN назначаются
+        отметками ниже. Снять с себя роль ADMIN нельзя.
+    </p>
+
+    <div class="alert alert-success"
+         th:if="${param.updated != null}"
+         th:text="'Роли пользователя «' + ${param.updated[0]} + '» обновлены.'">
+        Роли обновлены.
+    </div>
+    <div class="alert alert-warning"
+         th:if="${param.error != null and param.error[0] == 'self'}">
+        Нельзя снять с себя роль администратора.
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle bg-white">
+            <thead class="table-light">
+            <tr>
+                <th>Логин</th>
+                <th style="width: 18%;">READ_ONLY</th>
+                <th style="width: 18%;">USER</th>
+                <th style="width: 18%;">ADMIN</th>
+                <th style="width: 12%;"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Форма строки связывается с чекбоксами через HTML5-атрибут form="rf{id}":
+                 form нельзя вкладывать напрямую в tr — браузер разорвёт разметку. -->
+            <tr th:each="u : ${users}">
+                <td>
+                    <span th:text="${u.username}">ivanov</span>
+                    <span class="badge text-bg-dark ms-1"
+                          th:if="${u.username == currentUsername}">вы</span>
+                </td>
+                <td>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" checked disabled
+                               title="Базовая роль, есть у всех пользователей">
+                        <label class="form-check-label text-muted">всегда</label>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="userRole"
+                               th:form="'rf' + ${u.id}"
+                               th:checked="${u.hasRole(T(ru.kodrik.servicedesk.entity.AppRole).USER)}">
+                    </div>
+                </td>
+                <td>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="adminRole"
+                               th:form="'rf' + ${u.id}"
+                               th:checked="${u.hasRole(T(ru.kodrik.servicedesk.entity.AppRole).ADMIN)}"
+                               th:disabled="${u.username == currentUsername}">
+                    </div>
+                </td>
+                <td>
+                    <form th:id="'rf' + ${u.id}" th:action="@{/admin/roles/{id}(id=${u.id})}" method="post">
+                        <button type="submit" class="btn btn-sm btn-primary">Сохранить</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

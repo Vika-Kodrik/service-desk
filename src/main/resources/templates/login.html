@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head th:replace="~{fragments :: head('Вход')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments :: navbar}"></nav>
+
+<!-- Форма входа (форма 1). Обработку выполняет Spring Security. -->
+<main class="container my-5 flex-grow-1">
+    <div class="row justify-content-center">
+        <div class="col-md-5 col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h1 class="h4 card-title mb-4">Вход в систему</h1>
+
+                    <div class="alert alert-success" th:if="${param.registered}">
+                        Регистрация завершена. Войдите под своей учётной записью.
+                    </div>
+                    <div class="alert alert-success" th:if="${param.logout}">
+                        Вы вышли из системы.
+                    </div>
+                    <div class="alert alert-danger" th:if="${param.error}">
+                        Неверный логин или пароль.
+                    </div>
+
+                    <form th:action="@{/login}" method="post">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Логин</label>
+                            <input type="text" id="username" name="username"
+                                   class="form-control" required autofocus autocomplete="username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Пароль</label>
+                            <input type="password" id="password" name="password"
+                                   class="form-control" required autocomplete="current-password">
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Войти</button>
+                    </form>
+
+                    <p class="text-center mt-3 mb-0 small">
+                        Нет учётной записи? <a th:href="@{/register}">Зарегистрироваться</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

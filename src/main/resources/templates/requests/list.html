@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="ru">
+<head th:replace="~{fragments :: head('Заявки')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments :: navbar}"></nav>
+
+<!-- Список заявок (форма 2). USER видит только свои заявки, ADMIN — все. -->
+<main class="container my-4 flex-grow-1">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+        <h1 class="h3 mb-0">Заявки</h1>
+        <a class="btn btn-primary" sec:authorize="hasAnyRole('USER','ADMIN')"
+           th:href="@{/requests/new}">+ Новая заявка</a>
+    </div>
+
+    <div class="alert alert-warning" th:if="${param.error != null and param.error[0] == 'notfound'}">
+        Заявка не найдена или недоступна для вашей роли.
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle bg-white">
+            <thead class="table-light">
+            <tr>
+                <th>№</th>
+                <th>Тема</th>
+                <th>Категория</th>
+                <th>Приоритет</th>
+                <th>Статус</th>
+                <th>Создана</th>
+                <th>Автор</th>
+                <th>Решение / SLA</th>
+                <th class="text-end" sec:authorize="hasAnyRole('USER','ADMIN')">Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="r : ${requests}">
+                <td th:text="${r.id}">1</td>
+                <td th:text="${r.title}">Не работает принтер</td>
+                <td th:text="${r.category.name}">Проблема с ПК</td>
+                <td>
+                    <span class="badge"
+                          th:classappend="${r.priority.name() == 'CRITICAL'} ? 'text-bg-danger'
+                          : (${r.priority.name() == 'HIGH'} ? 'text-bg-warning'
+                          : (${r.priority.name() == 'MEDIUM'} ? 'text-bg-info' : 'text-bg-secondary'))"
+                          th:text="${r.priority.label}">Высокий</span>
+                </td>
+                <td>
+                    <span class="badge"
+                          th:classappend="${r.status.name() == 'NEW'} ? 'text-bg-secondary'
+                          : (${r.status.name() == 'IN_PROGRESS'} ? 'text-bg-primary'
+                          : (${r.status.name() == 'COMPLETED'} ? 'text-bg-success' : 'text-bg-dark'))"
+                          th:text="${r.status.label}">Новая</span>
+                </td>
+                <td th:text="${#temporals.format(r.createdAt, 'dd.MM.yyyy HH:mm')}">01.01.2026 10:00</td>
+                <td th:text="${r.author.username}">ivanov</td>
+                <td>
+                    <th:block th:if="${r.status.name() == 'COMPLETED'}">
+                        <span th:text="${#numbers.formatDecimal(r.resolutionHours(), 1, 1)} + ' ч'">30,0 ч</span>
+                        <span class="badge badge-sla-violated" th:if="${r.slaViolated}"
+                              title="Время решения превысило SLA категории">SLA ✗</span>
+                        <span class="badge text-bg-success" th:if="${!r.slaViolated}">SLA ✓</span>
+                    </th:block>
+                    <span class="text-muted" th:if="${r.status.name() != 'COMPLETED'}">—</span>
+                </td>
+                <td class="text-end" sec:authorize="hasAnyRole('USER','ADMIN')">
+                    <div class="d-flex justify-content-end gap-2">
+                        <a class="btn btn-outline-primary btn-sm"
+                           th:href="@{/requests/{id}/edit(id=${r.id})}">Изменить</a>
+                        <form th:action="@{/requests/{id}/delete(id=${r.id})}" method="post"
+                              onsubmit="return confirm('Удалить заявку?');">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Удалить</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(requests)}">
+                <td colspan="9" class="text-center text-muted py-4">
+                    Заявок пока нет.
+                    <span sec:authorize="hasAnyRole('USER','ADMIN')">Создайте первую!</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

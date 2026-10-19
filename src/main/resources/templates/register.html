@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head th:replace="~{fragments :: head('Регистрация')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments :: navbar}"></nav>
+
+<!-- Регистрация: новая учётная запись получает роль READ_ONLY -->
+<main class="container my-5 flex-grow-1">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h1 class="h4 card-title mb-4">Регистрация</h1>
+
+                    <form th:action="@{/register}" th:object="${registrationForm}" method="post" novalidate>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Логин *</label>
+                            <input type="text" id="username" th:field="*{username}"
+                                   class="form-control" th:errorclass="is-invalid" required>
+                            <div class="invalid-feedback" th:errors="*{username}">Ошибка</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Пароль *</label>
+                            <input type="password" id="password" th:field="*{password}"
+                                   class="form-control" th:errorclass="is-invalid" required>
+                            <div class="invalid-feedback" th:errors="*{password}">Ошибка</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Повторите пароль *</label>
+                            <input type="password" id="confirmPassword" th:field="*{confirmPassword}"
+                                   class="form-control" th:errorclass="is-invalid" required>
+                            <div class="invalid-feedback" th:errors="*{confirmPassword}">Ошибка</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Зарегистрироваться</button>
+                    </form>
+
+                    <p class="text-center mt-3 mb-0 small">
+                        Уже есть учётная запись? <a th:href="@{/login}">Войти</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

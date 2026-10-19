@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head th:replace="~{fragments :: head('Категория')}"></head>
+<body class="d-flex flex-column min-vh-100">
+<nav th:replace="~{fragments :: navbar}"></nav>
+
+<!-- Форма ввода/редактирования категории (форма 3). Доступна ADMIN. -->
+<main class="container my-4 flex-grow-1">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h1 class="h4 card-title mb-4"
+                        th:text="${categoryForm.id == null} ? 'Новая категория' : 'Редактирование категории'">
+                        Категория
+                    </h1>
+
+                    <form th:action="@{/categories}" th:object="${categoryForm}" method="post" novalidate>
+                        <input type="hidden" th:field="*{id}">
+
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Название <span class="text-danger">*</span></label>
+                            <input type="text" id="name" th:field="*{name}" class="form-control"
+                                   th:errorclass="is-invalid" required maxlength="100"
+                                   placeholder="Например: Проблема с ПК">
+                            <div class="invalid-feedback" th:errors="*{name}">Ошибка</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="slaHours" class="form-label">SLA, часов <span class="text-danger">*</span></label>
+                            <input type="number" id="slaHours" th:field="*{slaHours}" class="form-control"
+                                   th:errorclass="is-invalid" required min="1" max="1000">
+                            <div class="form-text">Нормативное время решения заявки этой категории.</div>
+                            <div class="invalid-feedback" th:errors="*{slaHours}">Ошибка</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-7 mb-3">
+                                <label for="department" class="form-label">Отдел (необязательно)</label>
+                                <input type="text" id="department" th:field="*{department}" class="form-control"
+                                       maxlength="200" placeholder="Ответственное подразделение">
+                            </div>
+                            <div class="col-md-5 mb-3">
+                                <label for="contactPhone" class="form-label">Телефон (необязательно)</label>
+                                <input type="text" id="contactPhone" th:field="*{contactPhone}" class="form-control"
+                                       maxlength="50" placeholder="+7 (495) 000-00-00">
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                            <a class="btn btn-outline-secondary" th:href="@{/categories}">Отмена</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
