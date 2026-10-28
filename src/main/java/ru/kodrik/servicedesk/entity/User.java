@@ -20,13 +20,6 @@ import lombok.Setter;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Пользователь приложения (таблица users).
- *
- * <p>Пароль хранится только в виде BCrypt-хэша. Роли — перечисление
- * {@link AppRole}, сохраняемое в отдельной таблице user_roles
- * (один пользователь может иметь несколько ролей).</p>
- */
 @Entity
 @Table(name = "users")
 @Getter
@@ -39,15 +32,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** Логин, уникальный, используется для входа. */
+    // Логин
     @Column(nullable = false, unique = true, length = 50)
     private String username;
 
-    /** BCrypt-хэш пароля (открытый текст не хранится и не принимается). */
+    //BCrypt-хэш пароля (открытый текст не хранится и не принимается)
     @Column(nullable = false)
     private String password;
 
-    /** Роли пользователя; EAGER — нужны при каждой аутентификации. */
+    // Роли пользователя
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role", nullable = false, length = 20)

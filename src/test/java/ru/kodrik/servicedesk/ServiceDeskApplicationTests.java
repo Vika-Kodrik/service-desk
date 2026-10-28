@@ -12,9 +12,7 @@ import static org.springframework.security.test.web.servlet.response.SecurityMoc
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 
-/**
- * Базовые тесты приложения: контекст запускается и вход по форме работает.
- */
+// Базовые тесты приложения: контекст запускается и вход по форме работает
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
@@ -28,10 +26,8 @@ class ServiceDeskApplicationTests {
         // Контекст Spring запускается без ошибок (БД, JPA, Security, Thymeleaf).
     }
 
-    /**
-     * Вход под учёткой admin/admin из data.sql: проверяет сквозную цепочку
-     * CustomUserDetailsService -> BCrypt -> Spring Security.
-     */
+    // Вход под учёткой admin/admin из data.sql: проверяет сквозную цепочку
+    //CustomUserDetailsService -> BCrypt -> Spring Security.
     @Test
     void adminCanLogIn() throws Exception {
         mockMvc.perform(formLogin().user("admin").password("admin"))
@@ -39,9 +35,7 @@ class ServiceDeskApplicationTests {
                 .andExpect(redirectedUrl("/requests"));
     }
 
-    /**
-     * Вход с неверным паролем отклоняется.
-     */
+    //Вход с неверным паролем отклоняется
     @Test
     void wrongPasswordIsRejected() throws Exception {
         mockMvc.perform(formLogin().user("admin").password("wrong"))

@@ -11,12 +11,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * Категория заявки — справочная таблица (categories).
- *
- * <p>Для каждой категории задан норматив времени реакции/решения SLA в часах:
- * заявка считается просроченной, если решена дольше, чем slaHours.</p>
- */
+//Для каждой категории задан норматив времени реакции/решения SLA в часах:
+//заявка считается просроченной, если решена дольше, чем slaHours
+
 @Entity
 @Table(name = "categories")
 @Getter
@@ -29,19 +26,15 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** Название категории, например «Проблема с ПК», «Доступ». */
     @Column(nullable = false, unique = true, length = 100)
     private String name;
 
-    /** Норматив SLA на решение заявки этой категории, часов. */
     @Column(name = "sla_hours", nullable = false)
     private int slaHours;
 
-    /** Ответственное подразделение (владелец категории), необязательное. */
     @Column(length = 100)
     private String department;
 
-    /** Контактный телефон поддержки по категории, необязательный. */
     @Column(length = 30)
     private String contactPhone;
 }

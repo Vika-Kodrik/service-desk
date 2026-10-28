@@ -10,10 +10,8 @@ import ru.kodrik.servicedesk.entity.AppRole;
 import ru.kodrik.servicedesk.entity.User;
 import ru.kodrik.servicedesk.repository.UserRepository;
 
-/**
- * Загружает пользователя из БД для аутентификации Spring Security.
- * Роли конвертируются в authority вида ROLE_XXX.
- */
+// Загружает пользователя из БД для аутентификации Spring Security.
+//Роли конвертируются в authority вида ROLE_XXX.
 @Service
 @RequiredArgsConstructor
 @Slf4j

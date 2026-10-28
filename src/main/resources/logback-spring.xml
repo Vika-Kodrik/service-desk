@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-    Конфигурация Logback: логи пишутся и в консоль, и в отдельный файл
-    logs/app.log с ротацией по дням и по размеру (сжатие старых файлов).
--->
+
 <configuration>
 
     <springProperty scope="context" name="APP_NAME" source="spring.application.name" defaultValue="service-desk"/>
 
-    <!-- Консольный вывод -->
+
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level) [%thread] %cyan(%logger{36}) - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <!-- Файловый вывод с ротацией: день + 10 МБ на файл, архив в .gz -->
+
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/app.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
@@ -28,7 +25,7 @@
         </encoder>
     </appender>
 
-    <!-- Уровни по пакетам -->
+
     <logger name="ru.kodrik.servicedesk" level="DEBUG"/>
 
     <root level="INFO">

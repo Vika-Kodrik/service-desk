@@ -14,9 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * Проверка правил доступа из WebSecurityConfig.
- */
+// Проверка правил доступа из WebSecurityCon/
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
@@ -25,7 +23,7 @@ class SecurityAccessTests {
     @Autowired
     private MockMvc mockMvc;
 
-    // --- Неаутентифицированные запросы ---
+    // Не аутентифицированные запросы
 
     @Test
     void anonymousIsRedirectedToLogin() throws Exception {
@@ -55,7 +53,7 @@ class SecurityAccessTests {
                 .andExpect(jsonPath("$.app.name").exists());
     }
 
-    // --- USER ---
+    // USER
 
     @Test
     @WithMockUser(username = "ivanov", roles = "USER")
@@ -77,7 +75,7 @@ class SecurityAccessTests {
                 .andExpect(status().isOk());
     }
 
-    // --- READ_ONLY ---
+    // READ_ONLY
 
     @Test
     @WithMockUser(username = "viewer", roles = "READ_ONLY")

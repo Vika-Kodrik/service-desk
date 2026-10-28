@@ -17,15 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Расчёт статистики (форма 6): количество заявок по статусам, приоритетам
- * и категориям, среднее время решения и доля нарушений SLA.
- *
- * <p>Область данных та же, что и в списке заявок: USER видит статистику
- * по своим заявкам, ADMIN — по всем. Считается в Java поверх отобранного
- * списка — объём данных учебного проекта это позволяет, а код остаётся
- * прозрачным для проверки.</p>
- */
+// Расчёт статистики
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -70,7 +62,7 @@ public class StatsService {
         Double avgHours = completed.isEmpty() ? null
                 : completed.stream().mapToDouble(ServiceRequest::resolutionHours).average().orElse(0);
 
-        // Нарушения SLA: время решения превысило норматив категории
+        // Нарушения SLA:
         long slaViolated = completed.stream().filter(ServiceRequest::isSlaViolated).count();
         double slaShare = completed.isEmpty() ? 0
                 : 100.0 * slaViolated / completed.size();

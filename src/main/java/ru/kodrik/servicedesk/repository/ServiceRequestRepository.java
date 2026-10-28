@@ -7,12 +7,11 @@ import ru.kodrik.servicedesk.entity.ServiceRequest;
 
 import java.util.List;
 
-/**
- * Доступ к заявкам. Фильтрация «только свои» выполняется этими методами на уровне БД.
- * Связи category и author объявлены LAZY, а open-in-view выключен, поэтому списковые
- * запросы забирают их сразу через JOIN FETCH — иначе шаблон упадёт на ленивой загрузке
- * вне транзакции (LazyInitializationException).
- */
+// Доступ к заявкам. Фильтрация «только свои» выполняется этими методами на уровне БД.
+//Связи category и author объявлены LAZY, а open-in-view выключен, поэтому списковые
+//запросы забирают их сразу через JOIN FETCH — иначе шаблон упадёт на ленивой загрузке
+//вне транзакции (LazyInitializationException).
+
 public interface ServiceRequestRepository extends JpaRepository<ServiceRequest, Long> {
 
     @Query("""

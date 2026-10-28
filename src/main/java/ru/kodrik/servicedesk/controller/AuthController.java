@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kodrik.servicedesk.dto.RegistrationForm;
 import ru.kodrik.servicedesk.service.UserService;
 
-/** Вход в систему (форма 1) и регистрация новых пользователей. */
+// Вход в систему и регистрация новых пользователей.
 @Controller
 @RequestMapping
 @RequiredArgsConstructor
@@ -22,7 +22,6 @@ public class AuthController {
 
     private final UserService userService;
 
-    /** Форма входа обрабатывается Spring Security, здесь только представление. */
     @GetMapping("/login")
     public String loginPage() {
         return "login";
@@ -34,10 +33,7 @@ public class AuthController {
         return "register";
     }
 
-    /**
-     * Регистрация: новая учётная запись получает роль READ_ONLY.
-     * Ошибки валидации и занятый логин возвращают пользователя к форме.
-     */
+    // Регистрация: новая учётная запись получает роль READ_ONLY.
     @PostMapping("/register")
     public String register(@Valid @ModelAttribute("registrationForm") RegistrationForm form,
                            BindingResult bindingResult,

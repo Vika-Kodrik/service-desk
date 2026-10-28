@@ -24,7 +24,7 @@ import ru.kodrik.servicedesk.service.UserService;
 import java.util.Comparator;
 import java.util.List;
 
-/** Список заявок (форма 2) и форма ввода/редактирования заявки (форма 3). */
+// Список заявок и форма ввода/редактирования заявки
 @Controller
 @RequestMapping("/requests")
 @RequiredArgsConstructor
@@ -39,10 +39,8 @@ public class RequestController {
     public String list(@AuthenticationPrincipal UserDetails principal, Model model) {
         User current = userService.getByUsername(principal.getUsername());
 
-        // Получаем список как обычно
         List<ServiceRequest> requests = requestService.listFor(current);
 
-        // Сортируем его по ID (по возрастанию)
         requests.sort(Comparator.comparing(ServiceRequest::getId));
 
         model.addAttribute("requests", requests);
@@ -67,7 +65,7 @@ public class RequestController {
         return "requests/form";
     }
 
-    /** Создание новой заявки (id пуст) или сохранение правок существующей. */
+    //Создание новой заявки (id пуст) или сохранение правок существующей
     @PostMapping
     public String save(@Valid @ModelAttribute("requestForm") RequestForm form,
                        BindingResult bindingResult,
@@ -105,7 +103,7 @@ public class RequestController {
         return form;
     }
 
-    /** Несуществующая заявка/категория — обратно к списку с сообщением. */
+    // Несуществующая заявка/категория — обратно к списку с сообщением
     @ExceptionHandler(IllegalArgumentException.class)
     public String handleNotFound(IllegalArgumentException e) {
         log.warn("Ошибка запроса: {}", e.getMessage());

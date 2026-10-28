@@ -18,11 +18,6 @@ import ru.kodrik.servicedesk.service.UserService;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Форма управления ролями (форма 7), доступна только ADMIN (правило /admin/**).
- * Администратор назначает пользователям роли USER и ADMIN;
- * роль READ_ONLY сохраняется у всех (базовый доступ на чтение).
- */
 @Controller
 @RequestMapping("/admin/roles")
 @RequiredArgsConstructor

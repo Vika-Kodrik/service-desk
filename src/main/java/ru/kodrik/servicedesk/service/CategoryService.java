@@ -10,7 +10,7 @@ import ru.kodrik.servicedesk.repository.CategoryRepository;
 
 import java.util.List;
 
-/** Работа со справочником категорий (создание/правка — только ADMIN на уровне Security). */
+// Работа со справочником категорий
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -48,10 +48,6 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
-    /**
-     * Удаление категории запрещено, если по ней есть заявки:
-     * иначе заявки останутся без категории и SLA.
-     */
     @Transactional
     public void delete(Long id) {
         Category category = getById(id);

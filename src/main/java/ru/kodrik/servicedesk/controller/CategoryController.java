@@ -19,8 +19,8 @@ import ru.kodrik.servicedesk.service.CategoryService;
 import java.util.Comparator;
 import java.util.List;
 
-/** Список категорий (форма 2) и форма ввода/редактирования категории (форма 3).
- *  Изменение справочника доступно только ADMIN — правила заданы в WebSecurityConfig. */
+//Список категорий и форма ввода/редактирования категории
+//Изменение справочника доступно только ADMIN — правила заданы в WebSecurityConfig.
 @Controller
 @RequestMapping("/categories")
 @RequiredArgsConstructor
@@ -85,7 +85,7 @@ public class CategoryController {
         return form;
     }
 
-    /** Попытка удалить категорию с заявками или несуществующую категорию. */
+    // Попытка удалить категорию с заявками или несуществующую категорию
     @ExceptionHandler({IllegalStateException.class, IllegalArgumentException.class})
     public String handleConflict(RuntimeException e) {
         log.warn("Операция с категорией отклонена: {}", e.getMessage());

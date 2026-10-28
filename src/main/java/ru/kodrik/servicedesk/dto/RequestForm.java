@@ -7,11 +7,9 @@ import lombok.Data;
 import ru.kodrik.servicedesk.entity.RequestPriority;
 import ru.kodrik.servicedesk.entity.RequestStatus;
 
-/** Форма создания/редактирования заявки. */
 @Data
 public class RequestForm {
 
-    /** Заполнен при редактировании, null при создании новой заявки. */
     private Long id;
 
     @NotBlank(message = "Укажите заголовок")

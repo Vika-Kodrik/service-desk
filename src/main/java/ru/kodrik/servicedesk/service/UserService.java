@@ -12,7 +12,6 @@ import ru.kodrik.servicedesk.repository.UserRepository;
 import java.util.List;
 import java.util.Set;
 
-/** Работа с пользователями: регистрация (роль READ_ONLY по умолчанию) и управление ролями. */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -32,19 +31,12 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("Пользователь не найден: id=" + id));
     }
 
-    /** Поиск пользователя по логину — используется контроллерами для текущего пользователя. */
     @Transactional(readOnly = true)
     public User getByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("Пользователь не найден: " + username));
     }
 
-    /**
-     * Регистрация нового пользователя. Пароль хэшируется BCrypt,
-     * новая учётная запись получает роль READ_ONLY (по заданию).
-     *
-     * @throws IllegalArgumentException если логин уже занят
-     */
     @Transactional
     public User register(String username, String rawPassword) {
         if (userRepository.existsByUsername(username)) {
@@ -56,10 +48,6 @@ public class UserService {
         return saved;
     }
 
-    /**
-     * Обновление ролей пользователя (форма администратора).
-     * Роль READ_ONLY сохраняется всегда — она отвечает за базовый доступ к спискам.
-     */
     @Transactional
     public User updateRoles(Long userId, Set<AppRole> newRoles) {
         User user = getById(userId);

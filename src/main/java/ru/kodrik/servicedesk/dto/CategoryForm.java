@@ -7,11 +7,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-/** Форма создания/редактирования категории. */
 @Data
 public class CategoryForm {
 
-    /** null — создаём новую категорию, иначе редактируем существующую. */
     private Long id;
 
     @NotBlank(message = "Укажите название категории")

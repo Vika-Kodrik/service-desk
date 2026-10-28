@@ -5,7 +5,7 @@ import ru.kodrik.servicedesk.entity.User;
 
 import java.util.Optional;
 
-/** Доступ к пользователям. */
+// Доступ к пользователям
 public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUsername(String username);

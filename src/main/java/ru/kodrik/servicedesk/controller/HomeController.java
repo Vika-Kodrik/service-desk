@@ -3,7 +3,7 @@ package ru.kodrik.servicedesk.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-/** Главная (форма 4) и страница «О программе» (форма 5). */
+// Главная и страница «О программе»
 @Controller
 public class HomeController {
 

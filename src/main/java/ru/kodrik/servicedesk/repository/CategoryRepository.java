@@ -5,7 +5,7 @@ import ru.kodrik.servicedesk.entity.Category;
 
 import java.util.List;
 
-/** Доступ к справочнику категорий. */
+//Доступ к справочнику категорий
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     List<Category> findAllByOrderByName();

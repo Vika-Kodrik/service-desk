@@ -8,14 +8,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-/**
- * Настройка Spring Security: сессионная аутентификация, собственная страница
- * входа, BCrypt-хэширование паролей и правила доступа по ролям.
- *
- * <p>CSRF-защита включена (по умолчанию): Thymeleaf сам подставляет токен
- * в формы с th:action. Исключение сделано только для консоли H2,
- * которая не умеет работать с CSRF-токенами.</p>
- */
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
@@ -32,13 +24,13 @@ public class WebSecurityConfig {
                         // Публичные страницы и ресурсы
                         .requestMatchers("/", "/about", "/login", "/register").permitAll()
                         .requestMatchers("/css/**", "/js/**").permitAll()
-                        // Actuator: по заданию открыты health и info
+                        // Actuator:  health и info
                         .requestMatchers("/actuator/health", "/actuator/info").permitAll()
-                        // Консоль H2 — только для локальной отладки
+                        // Консоль H2 только для локальной отладки
                         .requestMatchers("/h2-console/**").permitAll()
-                        // Управление ролями — только администратор
+                        // Управление ролями только администратор
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        // Статистика — USER и выше (READ_ONLY без USER не пускаем)
+                        // Статистика USER и выше (READ_ONLY без USER не пускаем)
                         .requestMatchers("/stats").hasAnyRole("USER", "ADMIN")
                         // Изменение данных: заявки — USER и ADMIN,
                         // справочник категорий — только ADMIN

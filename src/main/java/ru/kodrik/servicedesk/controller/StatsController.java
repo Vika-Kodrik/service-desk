@@ -11,7 +11,7 @@ import ru.kodrik.servicedesk.entity.User;
 import ru.kodrik.servicedesk.service.StatsService;
 import ru.kodrik.servicedesk.service.UserService;
 
-/** Форма статистики (форма 6). Доступ: USER и ADMIN (правило в WebSecurityConfig). */
+// Форма статистики. Доступ: USER и ADMIN (правило в WebSecurityConfig). */
 @Controller
 @RequestMapping("/stats")
 @RequiredArgsConstructor

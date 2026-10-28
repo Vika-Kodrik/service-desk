@@ -5,10 +5,6 @@ import ru.kodrik.servicedesk.entity.RequestStatus;
 
 import java.util.Map;
 
-/**
- * Готовые данные для формы статистики (форма 6).
- * Значения уже посчитаны сервисом, шаблон только выводит их.
- */
 public record StatsView(
         int total,
         Map<RequestStatus, Long> byStatus,

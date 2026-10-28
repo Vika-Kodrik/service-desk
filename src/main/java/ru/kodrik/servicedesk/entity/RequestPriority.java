@@ -1,8 +1,5 @@
 package ru.kodrik.servicedesk.entity;
 
-/**
- * Приоритет заявки.
- */
 public enum RequestPriority {
     LOW("Низкий"),
     MEDIUM("Средний"),
